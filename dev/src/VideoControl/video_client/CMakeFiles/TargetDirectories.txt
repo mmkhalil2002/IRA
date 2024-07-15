@@ -1,0 +1,3 @@
+/home/ubuntu/Video_Capture/video_client/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Video_Capture/video_client/CMakeFiles/edit_cache.dir
+/home/ubuntu/Video_Capture/video_client/CMakeFiles/video_client.dir

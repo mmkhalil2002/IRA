@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\visualc\u002B\u002B-070823\\RoboNightGuard320x240\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CA32BACC-C680-45D0-B0C6-72D62080FDD1}|RoboNightGuard.csproj|f:\\visualc\u002B\u002B-070823\\robonightguard320x240\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA32BACC-C680-45D0-B0C6-72D62080FDD1}|RoboNightGuard.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CA32BACC-C680-45D0-B0C6-72D62080FDD1}|RoboNightGuard.csproj|F:\\visualc\u002B\u002B-070823\\RoboNightGuard320x240\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CA32BACC-C680-45D0-B0C6-72D62080FDD1}|RoboNightGuard.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\visualc\u002B\u002B-070823\\RoboNightGuard320x240\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "F:\\visualc\u002B\u002B-070823\\RoboNightGuard320x240\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAHgAAAAAAAAAAAAAAH8AAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-02T01:23:02.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "F:\\visualc\u002B\u002B-070823\\RoboNightGuard320x240\\Form1.cs",
+              "RelativeDocumentMoniker": "Form1.cs",
+              "ToolTip": "F:\\visualc\u002B\u002B-070823\\RoboNightGuard320x240\\Form1.cs",
+              "RelativeToolTip": "Form1.cs",
+              "ViewState": "AQIAABsBAAAAAAAAAAAAAEYBAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-02T01:23:03.057Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

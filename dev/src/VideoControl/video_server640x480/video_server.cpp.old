@@ -1,0 +1,1019 @@
+#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/imgproc/imgproc.hpp>
+#include  <iostream>
+#include <time.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <semaphore.h>
+#include <signal.h>
+#include <sys/ioctl.h>
+
+using namespace cv;
+using namespace std;
+
+#define NUM_CLIENTS 100
+#define COMPRESS_2PIX  0x01
+#define COMPRESS_2x2PIX  0x02
+#define COMPRESS_4x4PIX  0x02
+sem_t semaphore, capture_video_semaphore;
+bool running = false;
+int QUIT = 0;
+int capDev = 0;
+VideoCapture cap(capDev);
+Mat img, flippedFrame, greyimg;
+// open the default camera
+int remoteSocket = 0;
+bool status = true;
+int numfds = 0;
+int debug_level = 0;
+bool client_status [NUM_CLIENTS];
+unsigned char  out_frame_2pix [640*480/2]; 
+unsigned char  out_frame_2x2pix [640*480/4]; 
+unsigned char  out_frame_4x4pix [640*480/16]; 
+int img_width = 0, img_height = 0;
+
+
+
+unsigned char compress_type = COMPRESS_2x2PIX;
+
+
+
+
+void convert_to_byte (Mat frame,unsigned char *buffer,int width, int height){
+
+	for (int j = 0; j < height; j++) {
+    		for (int i = 0; i < width; i++) {
+       		 uchar& uxy = frame.at<uchar>(j, i);
+        	int color = (int) uxy;
+		//cout << color << " ";
+        	buffer[j * width + i] = color;
+       		 }
+		//cout << endl;
+	}
+}
+
+void _print_frame (unsigned char *buffer,int w, int h){
+	for (int j = 0; j < h; j++) {
+    		for (int i = 0; i < w; i++) {
+        	int color =  buffer[j * (unsigned int)w + i] ;
+		cout << color << " ";
+       		 }
+		cout << endl;
+	}
+}
+
+void compress_frame (unsigned char *in_frame,int in_len,unsigned  char * out_frame)
+{
+	if (compress_type == COMPRESS_2PIX)
+	{
+		for (int i=0,j=0;i<in_len;i+=2,j++)
+		{
+			out_frame [j] = in_frame [i];
+		}
+	}
+	else if (compress_type == COMPRESS_2x2PIX)
+	{
+		std::cout << " image height " << img_height << " img width " << img_width << endl;
+		std::flush (std::cout);
+		for (int row = 0, crow=0; row < img_height;row+=2,crow++)
+	          for (int  col = 0, ccol=0; col < img_width;col+=2,ccol++)
+		  {
+			  int sl = row*img_width+col;
+			  int dl = crow*img_width/2 + ccol;
+			  out_frame [dl] = in_frame[sl];
+			  //out_frame [dl] = 0xf0;
+			  //printf (" pixel %x  dl %d  sl %d\n",out_frame [dl], dl,sl);
+			  //printf (" pixel %x  dl %d \n",out_frame [dl], dl);
+			  //printf ("PIX %x imgw %d imgh %d  row %d col %d crow %d ccol %d  dl %d  sl %d\n",out_frame[dl], img_width,img_height,row,col,crow,ccol,dl,sl);
+			  //printf ("imgw %d imgh %d  row %d col %d crow %d ccol %d  dl %d  sl %d\n",img_width,img_height,row,col,crow,ccol,dl,sl);
+                  }
+		//for (int i=0;i< greyimg.total()/4;i++)
+		//	printf (" PIX %x \n",out_frame[i]);
+
+
+	}
+	else if (compress_type == COMPRESS_4x4PIX)
+	{
+		std::cout << " image height " << img_height << " img width " << img_width << endl;
+		std::flush (std::cout);
+		for (int row = 0, crow=0; row < img_height;row+=4,crow++)
+	          for (int  col = 0, ccol=0; col < img_width;col+=4,ccol++)
+		  {
+			  int sl = row*img_width+col;
+			  int dl = crow*img_width/4 + ccol;
+			  out_frame [dl] = in_frame[sl];
+			  //out_frame [dl] = 0xf0;
+			  //printf (" pixel %x  dl %d  sl %d\n",out_frame [dl], dl,sl);
+			  //printf (" pixel %x  dl %d \n",out_frame [dl], dl);
+			  //printf ("PIX %x imgw %d imgh %d  row %d col %d crow %d ccol %d  dl %d  sl %d\n",out_frame[dl], img_width,img_height,row,col,crow,ccol,dl,sl);
+			  //printf ("imgw %d imgh %d  row %d col %d crow %d ccol %d  dl %d  sl %d\n",img_width,img_height,row,col,crow,ccol,dl,sl);
+                  }
+		//for (int i=0;i< greyimg.total()/4;i++)
+		//	printf (" PIX %x \n",out_frame[i]);
+
+
+	}
+}
+
+void *capture_video(void *ptr)
+{
+	while (true)
+	{
+		try
+		{
+		    // your code here
+        		cap >> img;
+			img_width =  img.cols;
+			img_height =  img.rows;
+        		//bool bSuccess = cap.read(img); // read a new frame from video
+        		sem_wait(&capture_video_semaphore);
+       			cv::cvtColor(img, greyimg, cv::COLOR_BGR2GRAY); 
+        		sem_post(&capture_video_semaphore);
+			//cout << "reading " << endl;
+			usleep (100);
+		}
+		catch(const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+	}
+	cout << " thread exit " << endl;
+}
+
+void *send_data(void *ptr){
+    int socket = *(int *)ptr;
+    int bytes;
+    //OpenCV Code
+    //----------------------------------------------------------
+    //VideoCapture cap(capDev);
+
+    //while(status){
+    while(client_status[socket]){
+        // get a frame from the camera
+	//cout << "send frame status " << status <<endl;
+	
+   	//cout << "get grey image " << endl;
+
+      if (debug_level == 2)
+      {
+	cout << "<<<<<  STEP VALUE " << img.step << endl;
+	cout << "<<<<<  COL VALUE " << img.cols << endl;
+	cout << "<<<<<  ROWS VALUE " << img.rows << endl;
+        cout << " ELEMENT SIZE "<< img.elemSize() << endl;
+        cout << " IMG TOTAL  "<< img.total() << endl;
+        cout << " IMG SIZE " << img.total()*img.elemSize()  << endl;
+	cout << "<<<<<  grey STEP VALUE " << greyimg.step << endl;
+	cout << "<<<<<  grey COL VALUE " << greyimg.cols << endl;
+	cout << "<<<<<  ROWS VALUE " << greyimg.rows << endl;
+        cout << " grey ELEMENT SIZE "<< greyimg.elemSize() << endl;
+        cout << " grey IMG TOTAL  "<< greyimg.total() << endl;
+        cout << " grey IMG SIZE " << greyimg.total()*greyimg.elemSize() << endl;
+      }
+
+        // flip the frame
+        //flip(img, flippedFrame, 1);
+
+        // send the flipped frame over the network
+       	sem_wait(&capture_video_semaphore);
+	cout << " start send " << endl;
+	unsigned char buf [4];
+
+	buf [0] = 0xaf;
+	buf [1] = 0xbf;
+	buf [2] = 0xcf;
+	buf [2] = 0xdf;
+
+	//std::cerr << " before send start"<< endl;
+        if ((bytes = send(socket, buf, 4, 0)) < 0){
+            std::cerr << "bytes = " << bytes << std::endl;
+	    std::flush (std::cerr);
+       	    sem_post(&capture_video_semaphore);
+            break;
+        }
+	std::flush (std::cerr);
+       	//bytes = send(socket, greyimg.data, greyimg.total(), 0);
+	bytes = 0;
+	int index = 0;
+	if (compress_type == COMPRESS_2PIX)
+	{
+		compress_frame (greyimg.data,greyimg.total(),out_frame_2pix);
+		while (bytes != greyimg.total()/2 && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &out_frame_2pix[bytes], greyimg.total()/2-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			if (debug_level == 1)
+			{
+				std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total()/2; 
+		        	std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        		std::flush (std::cerr);
+			}
+		}	
+	}
+
+	else if (compress_type == COMPRESS_2x2PIX)
+	{
+		compress_frame (greyimg.data,greyimg.total(),out_frame_2x2pix);
+		//for (int i=0;i< greyimg.total()/4;i++)
+		//	printf (" PIX %x \n",out_frame_2x2pix[i]);
+		cout << " compress 4pix " << endl;
+		while (bytes != greyimg.total()/4 && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &out_frame_2x2pix[bytes], greyimg.total()/4-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			if (debug_level == 1)
+			{
+				std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total()/4; 
+		        	std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        		std::flush (std::cerr);
+			}
+		}	
+	}
+	else if (compress_type == COMPRESS_4x4PIX)
+	{
+		compress_frame (greyimg.data,greyimg.total(),out_frame_4x4pix);
+		//for (int i=0;i< greyimg.total()/4;i++)
+		//	printf (" PIX %x \n",out_frame_2x2pix[i]);
+		cout << " compress 4pix " << endl;
+		while (bytes != greyimg.total()/16 && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &out_frame_4x4pix[bytes], greyimg.total()/16-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			if (debug_level == 1)
+			{
+				std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total()/4; 
+		        	std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        		std::flush (std::cerr);
+			}
+		}	
+	}
+
+	else
+	{
+		while (bytes != greyimg.total() && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &greyimg.data[bytes], greyimg.total()-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total();
+			std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        	std::flush (std::cerr);
+		}	
+	}
+	//std::cerr << " before  send iend bytes "<< bytes << endl;
+        //std::flush (std::cerr);
+        buf [0] = 0xfa;
+        buf [1] = 0xfb;
+        buf [2] = 0xfc;
+        buf [2] = 0xfd;
+        if ((bytes = send(socket, buf, 4, 0)) < 0){
+            std::cerr << "bytes = " << bytes << std::endl;
+	    std::flush (std::cerr);
+            sem_post(&capture_video_semaphore);  
+            break;
+	    //std::cerr << " after send bytes "<< bytes << endl;
+	    //std::flush (std::cerr);
+	//sleep (60*60);
+	}	
+
+       	sem_post(&capture_video_semaphore);
+	cout << "  send " << endl;
+	//std::cerr << "after send frame " << endl;
+        //std::flush (std::cerr);
+    }
+
+    std::cerr << "send quitting..." << std::endl;
+    std::flush (std::cerr);
+    close(socket);
+    //client_status[socket] = true;
+    sem_post(&capture_video_semaphore);  
+    return NULL;
+}
+
+void *recv_data(void *ptr){
+    int socket = *(int *)ptr;
+    char *buffer;
+    int bytes;
+
+    while(1){
+        bytes = recv(socket, buffer, sizeof(int), MSG_WAITALL);
+
+        if (bytes < 0){
+            std::cerr << "<<< error receiving from client >>>" << std::endl;
+            fflush (stderr);
+        }
+        else if (bytes > 0){
+            int msg = atoi(buffer);
+
+            if (msg == QUIT){
+                sem_wait(&semaphore);
+                running = true;
+                sem_post(&semaphore);
+                break;
+            }
+        }
+    }
+
+    std::cerr << "<<<<<<<  recv quitting...>>>>>>>" << std::endl;
+    fflush (stderr);
+    close(socket);
+    return (NULL);
+}
+
+
+int bytesAvailable (int sockfd)
+{
+    long bytes = 0;
+
+    if(ioctl(sockfd, FIONREAD, &bytes) < 0)
+    {
+        printf("ERROR: Network:bytesAvailable: ioctl() call failed.\n");
+        return -1;
+    }
+
+    return bytes;
+}
+
+int sock_status(int sockfd)
+{
+
+
+    int error = 0;
+    socklen_t len = sizeof (error);
+    int retval = getsockopt (remoteSocket, SOL_SOCKET, SO_ERROR, &error, &len);
+    if (retval != 0) {
+	   /* there was a problem getting the error code */
+    fprintf(stderr, "error getting socket error code: %s\n", strerror(retval));
+	   return -1;
+      }
+
+     if (error != 0) {
+      	/* socket has a non zero error status */
+    	fprintf(stderr, "socket error: %s\n", strerror(error));
+	return -1;
+      }
+
+    struct timeval tv;
+    fd_set  fd;
+    int result = 0;
+
+    tv.tv_sec  = 5;
+    tv.tv_usec = 0;
+
+    FD_ZERO(&fd);
+    FD_SET(sockfd, &fd);
+
+    result = select(sockfd + 1, &fd, 0, 0, &tv);
+
+    if(result && !bytesAvailable(sockfd))
+    {
+        std::cout << " disconnected " << std::endl;
+        return -1; // disconnected, I'm guessing this is definitely WRONG.
+    }
+    else if(result > 0 && FD_ISSET(sockfd, &fd))
+    {
+        std::cout << " bytes available " << std::endl;
+        return 0; // bytes available. successful
+    }
+    else if(!result)
+    {
+        std::cout << " timeout " << std::endl;
+        return -1; // timeout
+    }
+
+     std::cout << " select call failed " << std::endl;
+    return -1; // select() call failed.
+}
+
+
+
+
+
+void sig_handler(int signo)
+{
+  if (signo == SIGPIPE)
+  {
+   	printf("received SIGPIPE\n");
+	for (int i=0;client_status [i];i++)
+	{
+		if (client_status [i])
+		{
+			if (sock_status (i) < 0)
+			{
+				client_status[i] = false;
+                                sem_post(&capture_video_semaphore);  
+
+			}
+                 }
+         }
+    }
+  if (signo == SIGINT)
+  {
+    printf("received SIGINT\n");
+    cap.release();
+    exit (0);
+  }
+}
+
+int init ()
+{
+    sem_init(&semaphore, 0, 1);  
+    sem_init(&capture_video_semaphore, 0, 1);  
+    for (int i = 0;i< NUM_CLIENTS;i++)
+	{
+		client_status [i] = true;
+	}
+    if (!cap.isOpened())  // if not success, exit program
+    {
+        cout << "Cannot open the video cam" << endl;
+        return -1;
+    }
+    cout << "devise is opened" << endl;
+
+    int height = cap.get(CAP_PROP_FRAME_HEIGHT);
+    int width = cap.get(CAP_PROP_FRAME_WIDTH);
+    
+    if (debug_level == 2)
+    {
+	std::cout << "height: " << height << std::endl;
+	std::cout << "width: " << width << std::endl;
+	std::cout << "width: " << width << std::endl;
+    }
+
+    img = Mat::zeros(height, width, CV_8UC3);
+    greyimg = Mat::zeros(height, width, CV_8UC3);
+
+    int imgSize = img.total() * img.elemSize();
+    if (debug_level == 2)
+    {
+    	cout << " ELEMENT SIZE "<< img.elemSize() << endl;
+        cout << " IMG TOTAL  "<< img.total() << endl;
+    	cout << " IMG SIZE " << imgSize << endl;
+    }
+    int bytes = 0;
+
+    // make img continuos
+    if(!img.isContinuous()){ 
+        img = img.clone();
+    }
+
+    if (debug_level == 2)
+    	std::cout << "Image Size:" << imgSize << std::endl;
+    pthread_t capture_video_thread;
+    pthread_create(&capture_video_thread, NULL, capture_video, NULL);
+    return 0;
+
+}
+
+int main(int argc, char* argv[])
+{
+  int                 localSocket,
+                        port = 4097;                               
+
+    struct  sockaddr_in localAddr,
+                        remoteAddr;
+
+    if (signal(SIGPIPE, sig_handler) == SIG_ERR)
+ 	 printf("\ncan't catch SIGINT\n");
+    if (signal(SIGINT, sig_handler) == SIG_ERR)
+ 	 printf("\ncan't catch SIGINT\n");
+
+  	// A long long wait so that we can easily issue a signal to this process
+    int addrLen = sizeof(struct sockaddr_in);
+     pthread_t send_thread;
+     pthread_t recv_thread;
+     // initialize semaphore;
+    init ();
+    if ( (argc > 1) && (strcmp(argv[1],"-h") == 0) ) {
+          std::cerr << "usage: ./cv_video_srv [port] [capture device]\n" <<
+                       "port           : socket port (4097 default)\n" <<
+                       "capture device : (0 default)\n" << std::endl;
+
+          exit(1);
+    }
+
+    if (argc == 2) port = atoi(argv[1]);
+
+    localSocket = socket(AF_INET , SOCK_STREAM , 0);
+    cout << " local socket " << localSocket << endl;
+    if (localSocket == -1){
+         perror("socket() call failed!!");
+    }    
+    printf (" local socket id %d \n",localSocket);
+
+    localAddr.sin_family = AF_INET;
+    //localAddr.sin_addr.s_addr = INADDR_ANY;
+    localAddr.sin_addr.s_addr =  inet_addr("25.27.164.23");
+    localAddr.sin_port = htons( port );
+
+    if( bind(localSocket,(struct sockaddr *)&localAddr , sizeof(localAddr)) < 0) {
+         perror("Can't bind() socket");
+         exit(1);
+    }
+    
+    // Listening
+    listen(localSocket , 3);
+    
+    std::cout <<  "Waiting for connections...\n"
+              <<  "Server Port:" << port << std::endl;
+
+    //accept connection from an incoming client
+    while(1){
+	cout << " before accept" << endl;
+        remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
+	cerr << "****************  remote socket " << remoteSocket << endl;
+        
+        if (remoteSocket < 0) {
+            perror("accept failed!");
+            exit(1);
+        } 
+       client_status[remoteSocket] = true;
+        
+        std::cout << "Connection accepted" << std::endl;
+        pthread_create(&send_thread, NULL, send_data, &remoteSocket);
+        //pthread_create(&recv_thread, NULL, recv_data, &remoteSocket);
+
+        // pthread_join(thread_id, NULL);
+    }
+
+    // wait for threads to finish up
+    //pthread_join(send_thread, NULL);
+    //pthread_join(recv_thread, NULL);
+    //cout << " <<<< thread is terminated " << endl;
+    // close the socket
+     //close(remoteSocket);
+
+    return 0;
+
+}
+
+void *capture_video(void *ptr)
+{
+	while (true)
+	{
+		try
+		{
+		    // your code here
+        		cap >> img;
+			img_width =  img.cols;
+			img_height =  img.rows;
+        		//bool bSuccess = cap.read(img); // read a new frame from video
+        		sem_wait(&capture_video_semaphore);
+       			cv::cvtColor(img, greyimg, cv::COLOR_BGR2GRAY); 
+        		sem_post(&capture_video_semaphore);
+			//cout << "reading " << endl;
+			usleep (100);
+		}
+		catch(const std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+	}
+	cout << " thread exit " << endl;
+}
+
+void *send_data(void *ptr){
+    int socket = *(int *)ptr;
+    int bytes;
+    //OpenCV Code
+    //----------------------------------------------------------
+    //VideoCapture cap(capDev);
+
+    //while(status){
+    while(client_status[socket]){
+        // get a frame from the camera
+	//cout << "send frame status " << status <<endl;
+	
+   	//cout << "get grey image " << endl;
+
+      if (debug_level == 2)
+      {
+	cout << "<<<<<  STEP VALUE " << img.step << endl;
+	cout << "<<<<<  COL VALUE " << img.cols << endl;
+	cout << "<<<<<  ROWS VALUE " << img.rows << endl;
+        cout << " ELEMENT SIZE "<< img.elemSize() << endl;
+        cout << " IMG TOTAL  "<< img.total() << endl;
+        cout << " IMG SIZE " << img.total()*img.elemSize()  << endl;
+	cout << "<<<<<  grey STEP VALUE " << greyimg.step << endl;
+	cout << "<<<<<  grey COL VALUE " << greyimg.cols << endl;
+	cout << "<<<<<  ROWS VALUE " << greyimg.rows << endl;
+        cout << " grey ELEMENT SIZE "<< greyimg.elemSize() << endl;
+        cout << " grey IMG TOTAL  "<< greyimg.total() << endl;
+        cout << " grey IMG SIZE " << greyimg.total()*greyimg.elemSize() << endl;
+      }
+
+        // flip the frame
+        //flip(img, flippedFrame, 1);
+
+        // send the flipped frame over the network
+       	sem_wait(&capture_video_semaphore);
+	cout << " start send " << endl;
+	unsigned char buf [4];
+
+	buf [0] = 0xaf;
+	buf [1] = 0xbf;
+	buf [2] = 0xcf;
+	buf [2] = 0xdf;
+
+	//std::cerr << " before send start"<< endl;
+        if ((bytes = send(socket, buf, 4, 0)) < 0){
+            std::cerr << "bytes = " << bytes << std::endl;
+	    std::flush (std::cerr);
+       	    sem_post(&capture_video_semaphore);
+            break;
+        }
+	std::flush (std::cerr);
+       	//bytes = send(socket, greyimg.data, greyimg.total(), 0);
+	bytes = 0;
+	int index = 0;
+	if (compress_type == COMPRESS_2PIX)
+	{
+		compress_frame (greyimg.data,greyimg.total(),out_frame_2pix);
+		while (bytes != greyimg.total()/2 && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &out_frame_2pix[bytes], greyimg.total()/2-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			if (debug_level == 1)
+			{
+				std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total()/2; 
+		        	std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        		std::flush (std::cerr);
+			}
+		}	
+	}
+
+	else if (compress_type == COMPRESS_2x2PIX)
+	{
+		compress_frame (greyimg.data,greyimg.total(),out_frame_2x2pix);
+		//for (int i=0;i< greyimg.total()/4;i++)
+		//	printf (" PIX %x \n",out_frame_4pix[i]);
+		cout << " compress 4pix " << endl;
+		while (bytes != greyimg.total()/4 && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &out_frame_2x2pix[bytes], greyimg.total()/4-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			if (debug_level == 1)
+			{
+				std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total()/4; 
+		        	std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        		std::flush (std::cerr);
+			}
+		}	
+	}
+	else if (compress_type == COMPRESS_4x4PIX)
+	{
+		compress_frame (greyimg.data,greyimg.total(),out_frame_2x2pix);
+		//for (int i=0;i< greyimg.total()/4;i++)
+		//	printf (" PIX %x \n",out_frame_4pix[i]);
+		cout << " compress 4pix " << endl;
+		while (bytes != greyimg.total()/16 && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &out_frame_4x4pix[bytes], greyimg.total()/16-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			if (debug_level == 1)
+			{
+				std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total()/4; 
+		        	std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        		std::flush (std::cerr);
+			}
+		}	
+	}
+
+	else
+	{
+		while (bytes != greyimg.total() && client_status[socket] == true)
+		{
+        		if ((bytes += send(socket, &greyimg.data[bytes], greyimg.total()-bytes, 0)) < 0)
+			{	
+            			std::cerr << "error sending " << std::endl;
+	                	std::flush (std::cerr);
+                        	sem_post(&capture_video_semaphore);  
+            			break;
+       			 }
+			std::cerr << "bytes sent " << bytes << " index " << ++ index << "  total size " << greyimg.total();
+			std::cerr << " client_status[socket] " << client_status[socket] << endl;
+	        	std::flush (std::cerr);
+		}	
+	}
+	//std::cerr << " before  send iend bytes "<< bytes << endl;
+        //std::flush (std::cerr);
+        buf [0] = 0xfa;
+        buf [1] = 0xfb;
+        buf [2] = 0xfc;
+        buf [2] = 0xfd;
+        if ((bytes = send(socket, buf, 4, 0)) < 0){
+            std::cerr << "bytes = " << bytes << std::endl;
+	    std::flush (std::cerr);
+            sem_post(&capture_video_semaphore);  
+            break;
+	    //std::cerr << " after send bytes "<< bytes << endl;
+	    //std::flush (std::cerr);
+	//sleep (60*60);
+	}	
+
+       	sem_post(&capture_video_semaphore);
+	cout << "  send " << endl;
+	//std::cerr << "after send frame " << endl;
+        //std::flush (std::cerr);
+    }
+
+    std::cerr << "send quitting..." << std::endl;
+    std::flush (std::cerr);
+    close(socket);
+    //client_status[socket] = true;
+    sem_post(&capture_video_semaphore);  
+    return NULL;
+}
+
+void *recv_data(void *ptr){
+    int socket = *(int *)ptr;
+    char *buffer;
+    int bytes;
+
+    while(1){
+        bytes = recv(socket, buffer, sizeof(int), MSG_WAITALL);
+
+        if (bytes < 0){
+            std::cerr << "<<< error receiving from client >>>" << std::endl;
+            fflush (stderr);
+        }
+        else if (bytes > 0){
+            int msg = atoi(buffer);
+
+            if (msg == QUIT){
+                sem_wait(&semaphore);
+                running = true;
+                sem_post(&semaphore);
+                break;
+            }
+        }
+    }
+
+    std::cerr << "<<<<<<<  recv quitting...>>>>>>>" << std::endl;
+    fflush (stderr);
+    close(socket);
+    return (NULL);
+}
+
+
+int bytesAvailable (int sockfd)
+{
+    long bytes = 0;
+
+    if(ioctl(sockfd, FIONREAD, &bytes) < 0)
+    {
+        printf("ERROR: Network:bytesAvailable: ioctl() call failed.\n");
+        return -1;
+    }
+
+    return bytes;
+}
+
+int sock_status(int sockfd)
+{
+
+
+    int error = 0;
+    socklen_t len = sizeof (error);
+    int retval = getsockopt (remoteSocket, SOL_SOCKET, SO_ERROR, &error, &len);
+    if (retval != 0) {
+	   /* there was a problem getting the error code */
+    fprintf(stderr, "error getting socket error code: %s\n", strerror(retval));
+	   return -1;
+      }
+
+     if (error != 0) {
+      	/* socket has a non zero error status */
+    	fprintf(stderr, "socket error: %s\n", strerror(error));
+	return -1;
+      }
+
+    struct timeval tv;
+    fd_set  fd;
+    int result = 0;
+
+    tv.tv_sec  = 5;
+    tv.tv_usec = 0;
+
+    FD_ZERO(&fd);
+    FD_SET(sockfd, &fd);
+
+    result = select(sockfd + 1, &fd, 0, 0, &tv);
+
+    if(result && !bytesAvailable(sockfd))
+    {
+        std::cout << " disconnected " << std::endl;
+        return -1; // disconnected, I'm guessing this is definitely WRONG.
+    }
+    else if(result > 0 && FD_ISSET(sockfd, &fd))
+    {
+        std::cout << " bytes available " << std::endl;
+        return 0; // bytes available. successful
+    }
+    else if(!result)
+    {
+        std::cout << " timeout " << std::endl;
+        return -1; // timeout
+    }
+
+     std::cout << " select call failed " << std::endl;
+    return -1; // select() call failed.
+}
+
+
+
+
+
+void sig_handler(int signo)
+{
+  if (signo == SIGPIPE)
+  {
+   	printf("received SIGPIPE\n");
+	for (int i=0;client_status [i];i++)
+	{
+		if (client_status [i])
+		{
+			if (sock_status (i) < 0)
+			{
+				client_status[i] = false;
+                                sem_post(&capture_video_semaphore);  
+
+			}
+                 }
+         }
+    }
+  if (signo == SIGINT)
+  {
+    printf("received SIGINT\n");
+    cap.release();
+    exit (0);
+  }
+}
+
+int init ()
+{
+    sem_init(&semaphore, 0, 1);  
+    sem_init(&capture_video_semaphore, 0, 1);  
+    for (int i = 0;i< NUM_CLIENTS;i++)
+	{
+		client_status [i] = true;
+	}
+    if (!cap.isOpened())  // if not success, exit program
+    {
+        cout << "Cannot open the video cam" << endl;
+        return -1;
+    }
+    cout << "devise is opened" << endl;
+
+    int height = cap.get(CAP_PROP_FRAME_HEIGHT);
+    int width = cap.get(CAP_PROP_FRAME_WIDTH);
+    
+    if (debug_level == 2)
+    {
+	std::cout << "height: " << height << std::endl;
+	std::cout << "width: " << width << std::endl;
+	std::cout << "width: " << width << std::endl;
+    }
+
+    img = Mat::zeros(height, width, CV_8UC3);
+    greyimg = Mat::zeros(height, width, CV_8UC3);
+
+    int imgSize = img.total() * img.elemSize();
+    if (debug_level == 2)
+    {
+    	cout << " ELEMENT SIZE "<< img.elemSize() << endl;
+        cout << " IMG TOTAL  "<< img.total() << endl;
+    	cout << " IMG SIZE " << imgSize << endl;
+    }
+    int bytes = 0;
+
+    // make img continuos
+    if(!img.isContinuous()){ 
+        img = img.clone();
+    }
+
+    if (debug_level == 2)
+    	std::cout << "Image Size:" << imgSize << std::endl;
+    pthread_t capture_video_thread;
+    pthread_create(&capture_video_thread, NULL, capture_video, NULL);
+    return 0;
+
+}
+
+int main(int argc, char* argv[])
+{
+  int                 localSocket,
+                        port = 4097;                               
+
+    struct  sockaddr_in localAddr,
+                        remoteAddr;
+
+    if (signal(SIGPIPE, sig_handler) == SIG_ERR)
+ 	 printf("\ncan't catch SIGINT\n");
+    if (signal(SIGINT, sig_handler) == SIG_ERR)
+ 	 printf("\ncan't catch SIGINT\n");
+
+  	// A long long wait so that we can easily issue a signal to this process
+    int addrLen = sizeof(struct sockaddr_in);
+     pthread_t send_thread;
+     pthread_t recv_thread;
+     // initialize semaphore;
+    init ();
+    if ( (argc > 1) && (strcmp(argv[1],"-h") == 0) ) {
+          std::cerr << "usage: ./cv_video_srv [port] [capture device]\n" <<
+                       "port           : socket port (4097 default)\n" <<
+                       "capture device : (0 default)\n" << std::endl;
+
+          exit(1);
+    }
+
+    if (argc == 2) port = atoi(argv[1]);
+
+    localSocket = socket(AF_INET , SOCK_STREAM , 0);
+    cout << " local socket " << localSocket << endl;
+    if (localSocket == -1){
+         perror("socket() call failed!!");
+    }    
+    printf (" local socket id %d \n",localSocket);
+
+    localAddr.sin_family = AF_INET;
+    //localAddr.sin_addr.s_addr = INADDR_ANY;
+    localAddr.sin_addr.s_addr =  inet_addr("25.27.164.23");
+    localAddr.sin_port = htons( port );
+
+    if( bind(localSocket,(struct sockaddr *)&localAddr , sizeof(localAddr)) < 0) {
+         perror("Can't bind() socket");
+         exit(1);
+    }
+    
+    // Listening
+    listen(localSocket , 3);
+    
+    std::cout <<  "Waiting for connections...\n"
+              <<  "Server Port:" << port << std::endl;
+
+    //accept connection from an incoming client
+    while(1){
+	cout << " before accept" << endl;
+        remoteSocket = accept(localSocket, (struct sockaddr *)&remoteAddr, (socklen_t*)&addrLen);  
+	cerr << "****************  remote socket " << remoteSocket << endl;
+        
+        if (remoteSocket < 0) {
+            perror("accept failed!");
+            exit(1);
+        } 
+       client_status[remoteSocket] = true;
+        
+        std::cout << "Connection accepted" << std::endl;
+        pthread_create(&send_thread, NULL, send_data, &remoteSocket);
+        //pthread_create(&recv_thread, NULL, recv_data, &remoteSocket);
+
+        // pthread_join(thread_id, NULL);
+    }
+
+    // wait for threads to finish up
+    //pthread_join(send_thread, NULL);
+    //pthread_join(recv_thread, NULL);
+    //cout << " <<<< thread is terminated " << endl;
+    // close the socket
+     //close(remoteSocket);
+
+    return 0;
+
+}

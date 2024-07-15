@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( video_server640x480 )
+find_package( OpenCV REQUIRED )
+add_executable( video_server640x480 video_server640x480.cpp )
+target_link_libraries( video_server640x480 ${OpenCV_LIBS} pthread )

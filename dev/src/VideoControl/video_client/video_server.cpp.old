@@ -1,0 +1,186 @@
+#include "opencv2/highgui/highgui.hpp"
+#include  <iostream>
+#include<time.h>
+#include<unistd.h>
+#include <sys/time.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <semaphore.h>
+
+using namespace cv;
+using namespace std;
+
+//sem_t semaphore;
+bool running = false;
+int QUIT = 0;
+int capDev = 0;
+// open the default camera
+VideoCapture cap(capDev);
+
+
+
+void convert_to_byte (Mat frame,unsigned char *buffer,int width, int height){
+
+	for (int j = 0; j < height; j++) {
+    		for (int i = 0; i < width; i++) {
+       		 uchar& uxy = frame.at<uchar>(j, i);
+        	int color = (int) uxy;
+		//cout << color << " ";
+        	buffer[j * width + i] = color;
+       		 }
+		//cout << endl;
+	}
+}
+
+void _print_frame (unsigned char *buffer,int w, int h){
+	for (int j = 0; j < h; j++) {
+    		for (int i = 0; i < w; i++) {
+        	int color =  buffer[j * (unsigned int)w + i] ;
+		cout << color << " ";
+       		 }
+		cout << endl;
+	}
+}
+
+void *send_data(void *ptr){
+    int socket = *(int *)ptr;
+    //OpenCV Code
+    //----------------------------------------------------------
+
+    Mat img, flippedFrame;
+
+    int height = cap.get(CAP_PROP_FRAME_HEIGHT);
+    int width = cap.get(CAP_PROP_FRAME_WIDTH);
+
+    std::cout << "height: " << height << std::endl;
+    std::cout << "width: " << width << std::endl;
+
+    img = Mat::zeros(height, width, CV_8UC3);
+
+    int imgSize = img.total() * img.elemSize();
+    int bytes = 0;
+
+    // make img continuos
+    if(!img.isContinuous()){ 
+        img = img.clone();
+    }
+    std::cout << "Image Size:" << imgSize << std::endl;
+
+    bool status = true;
+
+    while(status){
+        // get a frame from the camera
+        cap >> img;
+        // flip the frame
+        //flip(img, flippedFrame, 1);
+
+        // send the flipped frame over the network
+        if ((bytes = send(socket, imag.data, imgSize, 0)) < 0){
+            std::cerr << "bytes = " << bytes << std::endl;
+            break;
+        }
+
+        //sem_wait(&semaphore);
+        //if(running) status = false;
+        //sem_post(&semaphore);
+    }
+
+    std::cerr << "send quitting..." << std::endl;
+    close(socket);
+}
+
+
+int main(int argc, char* argv[])
+{
+  int                 localSocket,
+                        remoteSocket,
+                        port = 4097;                               
+
+    struct  sockaddr_in localAddr,
+                        remoteAddr;
+    pthread_t thread_id;
+
+int addrLen = sizeof(struct sockaddr_in);
+
+       
+    if ( (argc > 1) && (strcmp(argv[1],"-h") == 0) ) {
+          std::cerr << "usage: ./cv_video_srv [port] [capture device]\n" <<
+                       "port           : socket port (4097 default)\n" <<
+                       "capture device : (0 default)\n" << std::endl;
+
+          exit(1);
+    }
+
+    if (argc == 2) port = atoi(argv[1]);
+
+    localSocket = socket(AF_INET , SOCK_STREAM , 0);
+    if (localSocket == -1){
+         perror("socket() call failed!!");
+    }    
+
+    localAddr.sin_family = AF_INET;
+    localAddr.sin_addr.s_addr = INADDR_ANY;
+    localAddr.sin_port = htons( port );
+
+    if( bind(localSocket,(struct sockaddr *)&localAddr , sizeof(localAddr)) < 0) {
+         perror("Can't bind() socket");
+         exit(1);
+    }
+    
+    //Listening
+    listen(localSocket , 3);
+    
+
+
+
+
+    VideoCapture cap(0); // open the video camera no. 0
+
+    if (!cap.isOpened())  // if not success, exit program
+    {
+        cout << "Cannot open the video cam" << endl;
+        return -1;
+    }
+
+   double dWidth = cap.get(CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
+   double dHeight = cap.get(CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+   unsigned char *buffer = new unsigned char  [(unsigned int)dWidth * (unsigned int)dHeight];
+
+    cout << "Frame size : " << dWidth << " x " << dHeight << endl;
+
+    //namedWindow("MyVideo",WINDOW_AUTOSIZE); //create a window called "MyVideo"
+
+    while (1)
+    {
+        Mat frame;
+        cout << "get frame "  << endl;
+       struct timeval begin, end;
+        gettimeofday(&begin, 0); 
+        bool bSuccess = cap.read(frame); // read a new frame from video
+	gettimeofday(&end, 0);
+        convert_to_byte (frame,buffer,dWidth,dHeight);
+       long seconds = end.tv_sec - begin.tv_sec;
+       long microseconds = end.tv_usec - begin.tv_usec;
+       double elapsed = seconds + microseconds*1e-6;
+       printf("Time measured: %.3f seconds.\n", elapsed);
+
+
+
+        if (!bSuccess) //if not success, break loop
+        {
+             cout << "Cannot read a frame from video stream" << endl;
+             break;
+        }
+
+        //imshow("MyVideo", frame); //show the frame in "MyVideo" window
+
+        if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
+       {
+            cout << "esc key is pressed by user" << endl;
+            break; 
+       }
+    }
+    return 0;
+
+}

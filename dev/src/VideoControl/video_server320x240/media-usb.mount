@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount Backup disk (/media/usb)
+
+[Mount]
+#What=/dev/disk/by-uuid/`lsblk -no UUID /dev/sda1`
+What=/dev/sda1
+Where=/media/usb
+#Type=
+#Options=
+#TimeoutSec=seconds
+
+[Install]
+WantedBy=multi-user.target

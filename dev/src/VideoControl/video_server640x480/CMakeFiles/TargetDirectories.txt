@@ -1,0 +1,3 @@
+/home/ubuntu/Video_Capture/video_server640x480/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Video_Capture/video_server640x480/CMakeFiles/edit_cache.dir
+/home/ubuntu/Video_Capture/video_server640x480/CMakeFiles/video_server640x480.dir
