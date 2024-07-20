@@ -1,0 +1,75 @@
+#include <wiringPi.h>
+#include <stdio.h>
+
+
+
+int main(void)//putting void in the parameter list of a function is not how you define the return type of a function. proper syntax is return_type function_name (parameter list) {}
+{
+
+	wiringPiSetup();
+
+	const int in0 = 0; // pin 11
+	const int in2 = 2; // pin 13
+	const int in3 = 3; // pin 15
+	const int in4 = 4; // pin 16
+        pinMode (in0, OUTPUT);
+        pinMode (in2, OUTPUT);
+        pinMode (in3, OUTPUT);
+        pinMode (in4, OUTPUT);
+
+
+        printf ("go forward\n");
+	digitalWrite(in0, LOW);
+ 	digitalWrite(in2, HIGH);
+  	digitalWrite(in3, LOW);
+  	digitalWrite(in4, HIGH);
+  	delay(500);
+        printf ("go back\n");
+	digitalWrite(in0, HIGH);
+ 	digitalWrite(in2, LOW);
+  	digitalWrite(in3, HIGH);
+  	digitalWrite(in4, LOW);
+  	delay(500);
+
+
+  // Now turn off motors
+  	digitalWrite(in0, LOW);
+  	digitalWrite(in2, LOW);
+  	digitalWrite(in3, LOW);
+  	digitalWrite(in4, LOW);
+
+	// Rotate the Motor A clockwise
+	digitalWrite(in0, HIGH);
+	digitalWrite(in2, LOW);
+	delay(500);
+	// Motor A
+	digitalWrite(in0, HIGH);
+	digitalWrite(in2, HIGH);
+	delay(500);
+	// Rotate the Motor B clockwise
+	digitalWrite(in3, HIGH);
+	digitalWrite(in4, LOW);
+	delay(500);
+	// Motor B
+	digitalWrite(in3, HIGH);
+	digitalWrite(in4, HIGH);
+	delay(500);
+	// Rotates the Motor A counter-clockwise
+	digitalWrite(in0, LOW);
+	digitalWrite(in2, HIGH);
+	delay(2000);
+	// Motor A
+	digitalWrite(in0, HIGH);
+	digitalWrite(in2, HIGH);
+	delay(500);
+	// Rotates the Motor B counter-clockwise
+	digitalWrite(in3, LOW);
+	digitalWrite(in4, HIGH);
+	delay(2000);
+	// Motor B
+	digitalWrite(in3, HIGH);
+	digitalWrite(in4, HIGH);
+	delay(500);
+
+	return 0;
+}
