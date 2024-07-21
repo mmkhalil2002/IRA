@@ -1,0 +1,11 @@
+exec the following commands:
+1- make 
+2- sudo make install
+3- sudo configen.sh -oper <att,vzw or sprint> -tag <example 191022>
+
+a configuration file will be created in /usr/local/sqwaq/etc/sq_config.conf
+
+This is the usual file we use. This time it is generated automatically
+
+
+
