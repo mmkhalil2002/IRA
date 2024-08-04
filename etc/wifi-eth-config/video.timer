@@ -1,0 +1,11 @@
+[unit]
+Description=video timer
+
+[Timer]
+OnBootSec=120s
+#OnUnitActiveSec=900s 
+Unit=video.service 
+Requires=video.service 
+
+[Install]
+WantedBy=timers.target

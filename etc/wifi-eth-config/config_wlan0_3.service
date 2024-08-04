@@ -1,0 +1,19 @@
+[Unit]
+# this config file is located/etc/systemd/system
+Description= try to connect client to wlan0
+After=network.target 
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 10
+ExecStart=/bin/bash config_wlan0_ip.sh 
+ExecStop= 
+#Restart=on-failure
+User=root
+
+#[Timer]
+#OnUnitActiveSec=45s
+#OnBootSec=45s
+
+[Install]
+WantedBy=multi-user.target
