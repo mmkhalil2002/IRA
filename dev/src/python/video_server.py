@@ -10,6 +10,7 @@ import getopt
 import signal
 import cv2
 from io import BytesIO
+import numpy as np
 
 # Global variables to hold configuration options
 cap_dev = 0          # Default video device
@@ -28,6 +29,60 @@ color_frame = True
 cap = None
 
 debug_level = 1  # Example debug level for output
+
+
+
+
+def zoom_in(frame, zoom_factor):
+    """
+    Zooms into the frame by the specified zoom factor.
+    Args:
+        frame: Input frame.
+        zoom_factor: Factor to zoom in (e.g., 2.0 for 2x zoom).
+    Returns:
+        Zoomed-in frame.
+    """
+    h, w, _ = frame.shape
+    center_x, center_y = w // 2, h // 2
+
+    # Calculate cropping box
+    radius_x, radius_y = int(w / (2 * zoom_factor)), int(h / (2 * zoom_factor))
+
+    # Crop the image
+    cropped_frame = frame[center_y - radius_y:center_y + radius_y, center_x - radius_x:center_x + radius_x]
+
+    # Resize back to original size
+    zoomed_frame = cv2.resize(cropped_frame, (w, h), interpolation=cv2.INTER_LINEAR)
+    return zoomed_frame
+
+
+def zoom_out(frame, zoom_factor):
+    """
+    Zooms out of the frame by the specified zoom factor.
+    Args:
+        frame: Input frame.
+        zoom_factor: Factor to zoom out (e.g., 2.0 for 0.5x zoom).
+    Returns:
+        Zoomed-out frame.
+    """
+    h, w, channels  = frame.shape
+    print(f"Height: {h}, Width: {w}, Channels: {channels}")
+    new_w, new_h = int(w * zoom_factor), int(h * zoom_factor)
+
+    # Resize the frame to smaller dimensions
+    resized_frame = cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
+
+    # Pad the resized frame to fit original size
+    top = (h - new_h) // 2
+    bottom = h - new_h - top
+    left = (w - new_w) // 2
+    right = w - new_w - left
+
+    padded_frame = cv2.copyMakeBorder(resized_frame, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+    return padded_frame
+
+
+
 
 def initialize_camera(cap_dev):
     global cap, img_height, img_width, Brightness, Contrast, Saturation, Gain
