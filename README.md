@@ -728,3 +728,37 @@ PasswordAuthentication yes
 
 systemctl restart ssh
 
+
+-----   GITHUP----------------
+
+
+Steps to Generate a Personal Access Token (PAT)
+Log in to GitHub:
+
+1- Go to GitHub and log in with your username (mmkhalil2002) and password.
+   Access Personal Access Tokens Settings:
+
+2-  Click on your profile picture in the top-right corner and go to Settings.
+3- In the left-hand menu, select Developer settings.
+4- Under Personal access tokens, click Tokens (classic).
+5- Click Generate new token > Generate new token (classic).
+6- Configure the Token:
+
+Add a note to describe the token (e.g., "Git operations for IRA repo").
+Select the expiration date for the token (e.g., 90 days, 1 year, etc.).
+Under Scopes, check the following boxes:
+repo: Full control of private repositories (required for pushing and pulling code).
+read:org (optional): If your repository is part of an organization.
+Click Generate token.
+Copy the Token:
+
+After generating the token, copy it immediately. You won't be able to view it again later.
+
+-------------------  end generation Personal Access Token (PAT)  ----
+
+---------------- basic operations ------- 
+
+git clone  https://github.com/mmkhalil2002/IRA.git
+git add .
+git commit -m "put comment"
+git push
