@@ -704,3 +704,27 @@ nmap -sP 192.168.1.0/24
 
 
                 
+----------------   ubuntu 24.04 --------------------
+add the following to /etc/ssh/sshd_config
+
+Port 22
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication yes
+PermitEmptyPasswords no
+PubkeyAuthentication  no
+PermitRootLogin  yes
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+KbdInteractiveAuthentication no
+
+then execute
+
+
+vi /etc/ssh/sshd_config.d/50-cloud-init.conf
+
+change to  
+
+PasswordAuthentication yes
+
+systemctl restart ssh
+
