@@ -20,7 +20,7 @@ psk=khalil02
 pkill wpa
 
 ./config_wifi_dns.sh
-
+mkdir -p /usr/local/robot/etc/systemd/system
 
 FILE=/etc/netplan/50-cloud-init.yaml
 #FILE=/etc/netplan/01-netcfg.yaml
