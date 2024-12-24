@@ -9,6 +9,7 @@ for i in 1 2 3 4; do
         break
     else
         echo "wlan0 does not have an IP address yet"
+	#sleep 10
 	(exec netplan.sh)
     fi
     

@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStartPre=/bin/sleep 5
+ExecStartPre=/bin/sleep 10
 ExecStart=/bin/bash config_wlan0_ip.sh 
 ExecStop= 
 #Restart=on-failure
