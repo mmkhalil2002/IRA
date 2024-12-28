@@ -1,2 +1,0 @@
-/home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/GobiUSBNet.o /home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/QMIDevice.o /home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/QMI.o
-

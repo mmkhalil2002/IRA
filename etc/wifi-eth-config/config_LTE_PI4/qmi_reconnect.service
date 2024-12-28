@@ -1,0 +1,23 @@
+[Unit]
+# this config file is located/etc/systemd/system
+Description=QMI Reconnect
+Requires=network-online.target
+After=network-online.target network.target redis.service
+
+[Service]
+Type=simple
+TimeoutStopSec=160
+ExecStart=/bin/sh /usr/local/etc/smartrobot/qmi_reconnect.sh
+#
+# SJP Give us 45 seconds to bring the modules down gracefully.  Should take approx 15 seconds.
+#
+#  Shutdown code handled by signals.  Nothing special to do here.
+#TimeoutStopSec=45
+#ExecStop=/usr/local/bin/sqwaqctl_server  -stop
+
+
+#Restart=on-failure
+User=root
+
+[Install]
+WantedBy=multi-user.target
