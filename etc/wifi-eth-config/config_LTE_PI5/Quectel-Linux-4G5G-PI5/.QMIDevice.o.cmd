@@ -43,7 +43,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
     $(wildcard include/config/64BIT) \
     $(wildcard include/config/ARCH_32BIT_USTAT_F_TINODE) \
   include/uapi/linux/types.h \
-  include/uapi/asm/types.h \
+  arch/arm64/include/generated/uapi/asm/types.h \
+  include/uapi/asm-generic/types.h \
   include/asm-generic/int-ll64.h \
   include/uapi/asm-generic/int-ll64.h \
   include/asm/bitsperlong.h \
@@ -58,7 +59,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/uapi/linux/byteorder/little_endian.h \
   include/linux/swab.h \
   include/uapi/linux/swab.h \
-  include/uapi/asm/swab.h \
+  arch/arm64/include/generated/uapi/asm/swab.h \
+  include/uapi/asm-generic/swab.h \
   include/linux/byteorder/generic.h \
   include/linux/module.h \
     $(wildcard include/config/MODULES) \
@@ -139,7 +141,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/asm-generic/barrier.h \
   include/linux/stat.h \
   arch/arm64/include/asm/stat.h \
-  include/uapi/asm/stat.h \
+  arch/arm64/include/generated/uapi/asm/stat.h \
+  include/uapi/asm-generic/stat.h \
   include/linux/time.h \
     $(wildcard include/config/POSIX_TIMERS) \
   include/linux/cache.h \
@@ -314,7 +317,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/bitmap.h \
   include/linux/errno.h \
   include/uapi/linux/errno.h \
-  include/uapi/asm/errno.h \
+  arch/arm64/include/generated/uapi/asm/errno.h \
+  include/uapi/asm-generic/errno.h \
   include/uapi/asm-generic/errno-base.h \
   include/linux/find.h \
   include/linux/string.h \
@@ -547,7 +551,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/asm-generic/signal.h \
   include/uapi/asm-generic/signal.h \
   include/uapi/asm-generic/signal-defs.h \
-  include/uapi/asm/siginfo.h \
+  arch/arm64/include/generated/uapi/asm/siginfo.h \
+  include/uapi/asm-generic/siginfo.h \
   include/linux/syscall_user_dispatch_types.h \
   include/linux/mm_types_task.h \
     $(wildcard include/config/ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH) \
@@ -920,6 +925,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/error-injection.h \
   include/asm-generic/error-injection.h \
   include/linux/tracepoint-defs.h \
+  arch/arm64/include/asm/module.h \
+    $(wildcard include/config/DYNAMIC_FTRACE) \
   include/asm-generic/module.h \
     $(wildcard include/config/HAVE_MOD_ARCH_SPECIFIC) \
     $(wildcard include/config/MODULES_USE_ELF_REL) \
@@ -1118,7 +1125,6 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/ftrace.h \
     $(wildcard include/config/HAVE_FUNCTION_GRAPH_RETVAL) \
     $(wildcard include/config/FUNCTION_TRACER) \
-    $(wildcard include/config/DYNAMIC_FTRACE) \
     $(wildcard include/config/HAVE_DYNAMIC_FTRACE_WITH_ARGS) \
     $(wildcard include/config/DYNAMIC_FTRACE_WITH_REGS) \
     $(wildcard include/config/DYNAMIC_FTRACE_WITH_ARGS) \
@@ -1214,11 +1220,15 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/ipc.h \
   include/linux/rhashtable-types.h \
   include/uapi/linux/ipc.h \
-  include/uapi/asm/ipcbuf.h \
-  include/uapi/asm/sembuf.h \
+  arch/arm64/include/generated/uapi/asm/ipcbuf.h \
+  include/uapi/asm-generic/ipcbuf.h \
+  arch/arm64/include/generated/uapi/asm/sembuf.h \
+  include/uapi/asm-generic/sembuf.h \
   include/linux/socket.h \
-  include/uapi/asm/socket.h \
-  include/uapi/asm/sockios.h \
+  arch/arm64/include/generated/uapi/asm/socket.h \
+  include/uapi/asm-generic/socket.h \
+  arch/arm64/include/generated/uapi/asm/sockios.h \
+  include/uapi/asm-generic/sockios.h \
   include/uapi/linux/sockios.h \
   include/linux/uio.h \
     $(wildcard include/config/ARCH_HAS_COPY_MC) \
@@ -1465,7 +1475,8 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/cdev.h \
   include/linux/poll.h \
   include/uapi/linux/poll.h \
-  include/uapi/asm/poll.h \
+  arch/arm64/include/generated/uapi/asm/poll.h \
+  include/uapi/asm-generic/poll.h \
   include/uapi/linux/eventpoll.h \
   include/linux/usb/usbnet.h \
   include/linux/fdtable.h \
