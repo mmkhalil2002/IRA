@@ -12,6 +12,8 @@ Ensure your system has the required packages for building the kernel:
 Obtain the Linux kernel 6.8 source code from the official Linux Kernel Archives:
 
 	cd /usr/src
+	git clone --depth=1 https://github.com/raspberrypi/linux.git -b rpi-6.8.y
+
 	sudo wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.8.tar.xz
 3. Extract the Source Code:
 
@@ -23,13 +25,12 @@ Unpack the downloaded tarball:
 
 If menuconfig is unavailable, you can use make defconfig to create a default configuration file:
 
-	make defconfig
-	This command generates a default .config file based on your system's architecture.
-OR
-
 	cp /boot/config-$(uname -r) .config
-	make oldconfig
-The make oldconfig command will prompt you for any new configuration options introduced in the kernel version you're building.
+	make ARCH=arm64 dtbs
+	make ARCH=arm64 defconfig
+	make oldconfig && make prepare
+
+The make defconfig command will prompt you for any new configuration options introduced in the kernel version you're building.
 
 5. Disable Certificate Verification:
 
@@ -41,6 +42,13 @@ OR
 	scripts/config --set-str SYSTEM_REVOCATION_KEYS ""
 
 This command changes the CONFIG_MODULE_SIG setting to 'n', disabling module signature verification.
+
+5.1  link 
+	sudo ln -sf /usr/src/linux         /lib/modules/$(uname -r)/build
+5.2  compile
+	make ARCH=arm64  CROSS_COMPILE= -C /lib/modules/$(uname -r)/build M=$(pwd)   modules
+
+
 
 6. Compile the Kernel:
 
@@ -54,6 +62,11 @@ Build the kernel and its modules:
 After a successful compilation, install the kernel modules:
 
 	sudo make modules_install
+
+7.1 copy bcm2712-rpi-5-b.dtb 
+
+sudo mkdir -p /lib/firmware/6.8.12-gea34d5aaf9ff/device-tree/
+sudo cp arch/arm64/boot/dts/broadcom/bcm2712-rpi-5-b.dtb /lib/firmware/6.8.12-gea34d5aaf9ff/device-tree/
 
 8. Install the Kernel:
 
@@ -78,6 +91,10 @@ After rebooting, confirm that your system is running the new kernel:
 
 	uname -r
 This command should display 6.8.0, indicating that the new kernel is active.
+
+12- find info in GobiNet.ko file
+	 modinfo GobiNet.ko
+
 
 Note: Building and installing a custom kernel can affect system stability and compatibility. It's recommended to test the new kernel thoroughly and keep a backup of your current working kernel to revert if necessary.
 
