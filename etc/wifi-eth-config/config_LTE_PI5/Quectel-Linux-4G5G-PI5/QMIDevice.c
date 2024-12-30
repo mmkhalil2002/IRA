@@ -772,11 +772,13 @@ static void IntCallback(struct urb *pIntURB, struct pt_regs *regs)
               GobiClearDownReason( pDev, CDC_CONNECTION_SPEED );
               DBG( "resuming traffic due to CONNECTION_SPEED_CHANGE\n" );
            }
+	   break;
          }
       default:
          {
              DBG( "ignoring invalid interrupt in packet\n" );
              PrintHex( pIntURB->transfer_buffer, pIntURB->actual_length );
+	      break;
          }
       }
       

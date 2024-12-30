@@ -31,8 +31,7 @@ default:
 	ln -sf makefile Makefile
 	$(MAKE) ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} -C $(KDIR) M=$(PWD) modules
 
-#install: default
-install: 
+install: default
 	mkdir -p $(OUTPUTDIR)
 	cp -f GobiNet.ko $(OUTPUTDIR)
 	depmod

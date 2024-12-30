@@ -81,6 +81,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define DRIVER_AUTHOR "Qualcomm Innovation Center"
 #define DRIVER_DESC "GobiNet"
 
+int QuecGobiNetSuspend(struct usb_interface *pIntf, pm_message_t powerEvent);
+
 // Debug flag
 int quec_debug = 0;
 
@@ -1028,7 +1030,7 @@ static struct sk_buff *GobiNetDriverTxFixup(struct usbnet *dev, struct sk_buff *
                 int save_debug = quec_debug;        	
                 memcpy(pGobiDev->mHostMAC, ehdr->h_source, ETH_ALEN);
                 INFO("PC Mac Address: ");
-                quec_debug=1;PrintHex(pGobiDev->mHostMAC, ETH_ALEN);quec_debug=save_debug;  
+                quec_debug=1;PrintHex((void *)pGobiDev->mHostMAC, ETH_ALEN);quec_debug=save_debug;  
             }
         }
 
@@ -2152,7 +2154,7 @@ static int GobiUSBNetProbe(
    memset( &(pGobiDev->mMEID), '0', 14 );
    
    DBG( "Mac Address:\n" );
-   PrintHex( &pGobiDev->mpNetDev->net->dev_addr[0], 6 );
+   PrintHex( (void *)&pGobiDev->mpNetDev->net->dev_addr[0], 6 );
 
    pGobiDev->mbQMIValid = false;
    memset( &pGobiDev->mQMIDev, 0, sizeof( sQMIDev ) );

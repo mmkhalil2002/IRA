@@ -32,12 +32,7 @@ MODULE_INFO(retpoline, "Y");
 #endif
 
 
-
-static const char ____versions[]
-__used __section("__versions") =
-	"\x00\x00\x00\x00\x00\x00\x00\x00";
-
-MODULE_INFO(depends, "");
+MODULE_INFO(depends, "usbnet");
 
 MODULE_ALIAS("usb:v05C6p9003d*dc*dsc*dp*ic*isc*ip*in*");
 MODULE_ALIAS("usb:v05C6p9215d*dc*dsc*dp*ic*isc*ip*in*");
@@ -52,4 +47,4 @@ MODULE_ALIAS("usb:v2C7Cp0512d*dc*dsc*dp*ic*isc*ip*in*");
 MODULE_ALIAS("usb:v2C7Cp0620d*dc*dsc*dp*ic*isc*ip*in*");
 MODULE_ALIAS("usb:v2C7Cp0800d*dc*dsc*dp*ic*isc*ip*in*");
 
-MODULE_INFO(srcversion, "EB0524D33890DFFDBFD8081");
+MODULE_INFO(srcversion, "56097475D666D7D39A0BD64");

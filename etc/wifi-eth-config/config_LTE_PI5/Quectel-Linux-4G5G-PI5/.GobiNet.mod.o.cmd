@@ -1,4 +1,4 @@
-savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.o := gcc -Wp,-MMD,/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/.GobiNet.mod.o.d -nostdinc -I./arch/arm64/include -I./arch/arm64/include/generated -I./include -I./arch/arm64/include/uapi -I./arch/arm64/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -DCC_USING_PATCHABLE_FUNCTION_ENTRY -DKASAN_SHADOW_SCALE_SHIFT= -fmacro-prefix-map=./= -std=gnu11 -fshort-wchar -funsigned-char -fno-common -fno-PIE -fno-strict-aliasing -mgeneral-regs-only -DCONFIG_CC_HAS_K_CONSTRAINT=1 -Wno-psabi -mabi=lp64 -fno-asynchronous-unwind-tables -fno-unwind-tables -mbranch-protection=pac-ret -Wa,-march=armv8.5-a -DARM64_ASM_ARCH='"armv8.5-a"' -DKASAN_SHADOW_SCALE_SHIFT= -fno-delete-null-pointer-checks -O2 -fno-allow-store-data-races -fstack-protector-strong -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -fpatchable-function-entry=4,2 -falign-functions=8 -fstrict-flex-arrays=3 -fno-strict-overflow -fno-stack-check -fconserve-stack -Wall -Wundef -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Werror=strict-prototypes -Wno-format-security -Wno-trigraphs -Wno-frame-address -Wno-address-of-packed-member -Wmissing-declarations -Wmissing-prototypes -Wframe-larger-than=1024 -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-dangling-pointer -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-overflow -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wenum-conversion -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-restrict -Wno-packed-not-aligned -Wno-format-overflow -Wno-format-truncation -Wno-stringop-truncation -Wno-missing-field-initializers -Wno-type-limits -Wno-shift-negative-value -Wno-maybe-uninitialized -Wno-sign-compare -g -gdwarf-5 -mstack-protector-guard=sysreg -mstack-protector-guard-reg=sp_el0 -mstack-protector-guard-offset=1544 -fsanitize=bounds-strict -fsanitize=shift -fsanitize=bool -fsanitize=enum -DMODULE -DKBUILD_BASENAME='"GobiNet.mod"' -DKBUILD_MODNAME='"GobiNet"' -D__KBUILD_MODNAME=kmod_GobiNet -c -o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.c
+savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.o := gcc -Wp,-MMD,/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/.GobiNet.mod.o.d -nostdinc -I./arch/arm64/include -I./arch/arm64/include/generated -I./include -I./arch/arm64/include/uapi -I./arch/arm64/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -DKASAN_SHADOW_SCALE_SHIFT= -fmacro-prefix-map=./= -std=gnu11 -fshort-wchar -funsigned-char -fno-common -fno-PIE -fno-strict-aliasing -mgeneral-regs-only -DCONFIG_CC_HAS_K_CONSTRAINT=1 -Wno-psabi -mabi=lp64 -fno-asynchronous-unwind-tables -fno-unwind-tables -mbranch-protection=pac-ret -Wa,-march=armv8.5-a -DARM64_ASM_ARCH='"armv8.5-a"' -DKASAN_SHADOW_SCALE_SHIFT= -fno-delete-null-pointer-checks -O2 -fno-allow-store-data-races -fstack-protector-strong -fno-omit-frame-pointer -fno-optimize-sibling-calls -ftrivial-auto-var-init=zero -fno-stack-clash-protection -falign-functions=4 -fstrict-flex-arrays=3 -fno-strict-overflow -fno-stack-check -fconserve-stack -Wall -Wundef -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Werror=strict-prototypes -Wno-format-security -Wno-trigraphs -Wno-frame-address -Wno-address-of-packed-member -Wmissing-declarations -Wmissing-prototypes -Wframe-larger-than=2048 -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-dangling-pointer -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-overflow -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wenum-conversion -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-restrict -Wno-packed-not-aligned -Wno-format-overflow -Wno-format-truncation -Wno-stringop-truncation -Wno-missing-field-initializers -Wno-type-limits -Wno-shift-negative-value -Wno-maybe-uninitialized -Wno-sign-compare -g -fno-var-tracking -femit-struct-debug-baseonly -mstack-protector-guard=sysreg -mstack-protector-guard-reg=sp_el0 -mstack-protector-guard-offset=1152 -DMODULE -DKBUILD_BASENAME='"GobiNet.mod"' -DKBUILD_MODNAME='"GobiNet"' -D__KBUILD_MODNAME=kmod_GobiNet -c -o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.c
 
 source_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.o := /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/GobiNet.mod.c
 
@@ -281,7 +281,6 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
     $(wildcard include/config/PROVE_RAW_LOCK_NESTING) \
     $(wildcard include/config/LOCKDEP) \
     $(wildcard include/config/LOCK_STAT) \
-  include/linux/dynamic_debug.h \
   include/linux/kernel.h \
     $(wildcard include/config/PREEMPT_VOLUNTARY_BUILD) \
     $(wildcard include/config/PREEMPT_DYNAMIC) \
@@ -328,7 +327,6 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/uapi/linux/string.h \
   arch/arm64/include/asm/string.h \
     $(wildcard include/config/ARCH_HAS_UACCESS_FLUSHCACHE) \
-  include/linux/fortify-string.h \
   include/linux/bitmap-str.h \
   include/linux/gfp_types.h \
   include/linux/numa.h \
@@ -336,6 +334,7 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
     $(wildcard include/config/NUMA_KEEP_MEMINFO) \
     $(wildcard include/config/NUMA) \
     $(wildcard include/config/HAVE_ARCH_NODE_DEV_GROUP) \
+  arch/arm64/include/asm/sparsemem.h \
   include/linux/smp.h \
     $(wildcard include/config/UP_LATE_INIT) \
     $(wildcard include/config/DEBUG_PREEMPT) \
@@ -671,7 +670,6 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
     $(wildcard include/config/HUGETLB_PAGE_SIZE_VARIABLE) \
   include/linux/page-flags-layout.h \
   include/generated/bounds.h \
-  arch/arm64/include/asm/sparsemem.h \
   include/linux/mm_types.h \
     $(wildcard include/config/HAVE_ALIGNED_STRUCT_PAGE) \
     $(wildcard include/config/USERFAULTFD) \
@@ -713,10 +711,6 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/completion.h \
   include/linux/swait.h \
   include/linux/uprobes.h \
-  arch/arm64/include/asm/uprobes.h \
-  arch/arm64/include/asm/debug-monitors.h \
-  arch/arm64/include/asm/esr.h \
-  arch/arm64/include/asm/probes.h \
   include/linux/workqueue.h \
     $(wildcard include/config/DEBUG_OBJECTS_WORK) \
     $(wildcard include/config/FREEZER) \
@@ -762,14 +756,17 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/rcu_node_tree.h \
     $(wildcard include/config/RCU_FANOUT) \
     $(wildcard include/config/RCU_FANOUT_LEAF) \
+  arch/arm64/include/asm/mmzone.h \
+  arch/arm64/include/asm/numa.h \
+  arch/arm64/include/asm/topology.h \
+    $(wildcard include/config/ACPI_CPPC_LIB) \
+  include/linux/arch_topology.h \
+    $(wildcard include/config/GENERIC_ARCH_TOPOLOGY) \
+  include/asm-generic/topology.h \
+  include/asm-generic/numa.h \
   include/linux/topology.h \
     $(wildcard include/config/USE_PERCPU_NUMA_NODE_ID) \
     $(wildcard include/config/SCHED_SMT) \
-  include/linux/arch_topology.h \
-    $(wildcard include/config/ACPI_CPPC_LIB) \
-    $(wildcard include/config/GENERIC_ARCH_TOPOLOGY) \
-  arch/arm64/include/asm/topology.h \
-  include/asm-generic/topology.h \
   include/linux/sysctl.h \
     $(wildcard include/config/SYSCTL) \
   include/uapi/linux/sysctl.h \
@@ -926,6 +923,7 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G-PI5/
   include/linux/error-injection.h \
   include/asm-generic/error-injection.h \
   include/linux/tracepoint-defs.h \
+  include/linux/dynamic_debug.h \
   arch/arm64/include/asm/module.h \
     $(wildcard include/config/DYNAMIC_FTRACE) \
   include/asm-generic/module.h \
