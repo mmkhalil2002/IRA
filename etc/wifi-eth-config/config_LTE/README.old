@@ -1,0 +1,111 @@
+
+sudo apt install linux-headers-$(uname -r)
+
+
+
+ make ARCH=arm64   CROSS_COMPILE= -C /lib/modules/$(uname -r)/build M=$(pwd) modules
+To download, configure, and install Linux kernel version 6.8 on your Ubuntu system without using menuconfig, and to disable certificate verification during the build process, follow these steps:
+
+1. Install Necessary Dependencies:
+
+Ensure your system has the required packages for building the kernel:
+
+	sudo apt-get update
+	sudo apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev
+2. Download the Kernel Source:
+
+Obtain the Linux kernel 6.8 source code from the official Linux Kernel Archives:
+
+	cd /usr/src
+	git clone --depth=1 https://github.com/raspberrypi/linux.git -b rpi-6.8.y
+
+	sudo wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.8.tar.xz
+3. Extract the Source Code:
+
+Unpack the downloaded tarball:
+
+	sudo tar -xf linux-6.8.tar.xz
+	cd linux-6.8
+4. Configure the Kernel Without menuconfig:
+
+If menuconfig is unavailable, you can use make defconfig to create a default configuration file:
+
+	cp /boot/config-$(uname -r) .config
+	make ARCH=arm64 dtbs
+	make ARCH=arm64 defconfig
+	make oldconfig && make prepare
+
+The make defconfig command will prompt you for any new configuration options introduced in the kernel version you're building.
+
+5. Disable Certificate Verification:
+
+To disable certificate verification, edit the .config file directly:
+
+	sed -i 's/CONFIG_MODULE_SIG=y/CONFIG_MODULE_SIG=n/' .config
+OR
+	scripts/config --set-str SYSTEM_TRUSTED_KEYS ""
+	scripts/config --set-str SYSTEM_REVOCATION_KEYS ""
+
+This command changes the CONFIG_MODULE_SIG setting to 'n', disabling module signature verification.
+
+5.1  link 
+	sudo ln -sf /usr/src/linux         /lib/modules/$(uname -r)/build
+5.2  compile
+	make ARCH=arm64  CROSS_COMPILE= -C /lib/modules/$(uname -r)/build M=$(pwd)   modules
+
+
+
+6. Compile the Kernel:
+
+Build the kernel and its modules:
+
+	make -j$(nproc)
+	The -j$(nproc) flag utilizes all available CPU cores to speed up the compilation.
+
+7. Install Modules:
+
+After a successful compilation, install the kernel modules:
+
+	sudo make modules_install
+
+7.1 copy bcm2712-rpi-5-b.dtb 
+
+sudo mkdir -p /lib/firmware/6.8.12-gea34d5aaf9ff/device-tree/
+sudo cp arch/arm64/boot/dts/broadcom/bcm2712-rpi-5-b.dtb /lib/firmware/6.8.12-gea34d5aaf9ff/device-tree/
+
+8. Install the Kernel:
+
+Install the compiled kernel:
+
+	sudo make install
+
+9. Update Bootloader:
+
+Ensure that the bootloader is updated to recognize the new kernel:
+
+	sudo update-grub
+
+10. Reboot into the New Kernel:
+
+Reboot your system to start using the new kernel:
+
+	sudo reboot
+11. Verify the New Kernel:
+
+After rebooting, confirm that your system is running the new kernel:
+
+	uname -r
+This command should display 6.8.0, indicating that the new kernel is active.
+
+12- find info in GobiNet.ko file
+	 modinfo GobiNet.ko
+
+
+Note: Building and installing a custom kernel can affect system stability and compatibility. It's recommended to test the new kernel thoroughly and keep a backup of your current working kernel to revert if necessary.
+
+For more detailed guidance, you can refer to the following resources:
+
+Kernel/BuildYourOwnKernel - Ubuntu Wiki
+This guide provides comprehensive instructions and additional tips for building and customizing the Linux kernel.
+
+For a visual demonstration of the kernel compilation and installation process, you may find the following video helpful:

@@ -1,1 +1,0 @@
-cmd_/home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/GobiNet.ko := ld -r  -EL -z noexecstack   --build-id  -T ./scripts/module-common.lds -o /home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/GobiNet.ko /home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/GobiNet.o /home/ubuntu/wifi-eth-config-08-21-21/Quectel-Linux-4G5G/GobiNet.mod.o;  true

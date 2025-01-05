@@ -1,0 +1,1 @@
+savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/Module.symvers -T /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/modules.order -i Module.symvers -e 
