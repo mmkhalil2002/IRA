@@ -1,12 +1,11 @@
-savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o := gcc-13 -Wp,-MMD,/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/.GobiUSBNet.o.d -nostdinc -I./arch/aarch64/include -I./arch/aarch64/include/generated  -I./include -I./arch/aarch64/include/uapi -I./arch/aarch64/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -I./ubuntu/include -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -DCC_USING_PATCHABLE_FUNCTION_ENTRY -DKASAN_SHADOW_SCALE_SHIFT= -fmacro-prefix-map=./= -std=gnu11 -fshort-wchar -funsigned-char -fno-common -fno-PIE -fno-strict-aliasing -mgeneral-regs-only -DCONFIG_CC_HAS_K_CONSTRAINT=1 -Wno-psabi -mabi=lp64 -fno-asynchronous-unwind-tables -fno-unwind-tables -mbranch-protection=pac-ret -Wa,-march=armv8.5-a -DARM64_ASM_ARCH='"armv8.5-a"' -DKASAN_SHADOW_SCALE_SHIFT= -fno-delete-null-pointer-checks -O2 -fno-allow-store-data-races -fstack-protector-strong -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -fpatchable-function-entry=4,2 -falign-functions=8 -fstrict-flex-arrays=3 -fno-strict-overflow -fno-stack-check -fconserve-stack -Wall -Wundef -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Werror=strict-prototypes -Wno-format-security -Wno-trigraphs -Wno-frame-address -Wno-address-of-packed-member -Wmissing-declarations -Wmissing-prototypes -Wframe-larger-than=1024 -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-dangling-pointer -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-overflow -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wenum-conversion -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-restrict -Wno-packed-not-aligned -Wno-format-overflow -Wno-format-truncation -Wno-stringop-truncation -Wno-override-init -Wno-missing-field-initializers -Wno-type-limits -Wno-shift-negative-value -Wno-maybe-uninitialized -Wno-sign-compare -g -gdwarf-5 -mstack-protector-guard=sysreg -mstack-protector-guard-reg=sp_el0 -mstack-protector-guard-offset=1544  -fsanitize=bounds-strict -fsanitize=shift -fsanitize=bool -fsanitize=enum  -DMODULE  -DKBUILD_BASENAME='"GobiUSBNet"' -DKBUILD_MODNAME='"GobiNet"' -D__KBUILD_MODNAME=kmod_GobiNet -c -o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.c  
+savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o := gcc-13 -Wp,-MMD,/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/.GobiUSBNet.o.d -nostdinc -I./arch/aarch64/include -I./arch/aarch64/include/generated  -I./include -I./arch/aarch64/include/uapi -I./arch/aarch64/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/compiler-version.h -include ./include/linux/kconfig.h -I./ubuntu/include -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -DCC_USING_PATCHABLE_FUNCTION_ENTRY -DKASAN_SHADOW_SCALE_SHIFT= -fmacro-prefix-map=./= -std=gnu11 -fshort-wchar -funsigned-char -fno-common -fno-PIE -fno-strict-aliasing -mgeneral-regs-only -DCONFIG_CC_HAS_K_CONSTRAINT=1 -Wno-psabi -mabi=lp64 -fno-asynchronous-unwind-tables -fno-unwind-tables -mbranch-protection=pac-ret -Wa,-march=armv8.5-a -DARM64_ASM_ARCH='"armv8.5-a"' -DKASAN_SHADOW_SCALE_SHIFT= -fno-delete-null-pointer-checks -O2 -fno-allow-store-data-races -fstack-protector-strong -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-stack-clash-protection -fpatchable-function-entry=4,2 -falign-functions=8 -fstrict-flex-arrays=3 -fno-strict-overflow -fno-stack-check -fconserve-stack -Wall -Wundef -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Werror=strict-prototypes -Wno-format-security -Wno-trigraphs -Wno-frame-address -Wno-address-of-packed-member -Wmissing-declarations -Wmissing-prototypes -Wframe-larger-than=1024 -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-dangling-pointer -Wvla -Wno-pointer-sign -Wcast-function-type -Wno-stringop-overflow -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wenum-conversion -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-restrict -Wno-packed-not-aligned -Wno-format-overflow -Wno-format-truncation -Wno-stringop-truncation -Wno-override-init -Wno-missing-field-initializers -Wno-type-limits -Wno-shift-negative-value -Wno-maybe-uninitialized -Wno-sign-compare -g -gdwarf-5 -mstack-protector-guard=sysreg -mstack-protector-guard-reg=sp_el0 -mstack-protector-guard-offset=1544  -fsanitize=bounds-strict -fsanitize=shift -fsanitize=bool -fsanitize=enum  -DMODULE  -DKBUILD_BASENAME='"GobiUSBNet"' -DKBUILD_MODNAME='"GobiNet"' -D__KBUILD_MODNAME=kmod_GobiNet -c -o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c  
 
-source_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o := /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.c
+source_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o := /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c
 
-deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o := \
-    $(wildcard include/config/BRIDGE) \
-    $(wildcard include/config/ANDROID) \
+deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o := \
     $(wildcard include/config/PM) \
     $(wildcard include/config/X86_32) \
+    $(wildcard include/config/ANDROID) \
   include/linux/compiler-version.h \
     $(wildcard include/config/CC_VERSION_TEXT) \
   include/linux/kconfig.h \
@@ -1473,15 +1472,7 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/Gobi
   include/linux/unaligned/packed_struct.h \
   include/linux/ethtool.h \
   include/uapi/linux/ethtool.h \
-  include/linux/usb.h \
-    $(wildcard include/config/USB_MON) \
-    $(wildcard include/config/USB_LED_TRIG) \
-  include/linux/mod_devicetable.h \
-  include/uapi/linux/mei.h \
-  include/uapi/linux/mei_uuid.h \
-  include/linux/usb/ch9.h \
-  include/uapi/linux/usb/ch9.h \
-  include/linux/pm_runtime.h \
+  include/generated/uapi/linux/version.h \
   include/net/arp.h \
     $(wildcard include/config/INET) \
   include/linux/if_arp.h \
@@ -1569,18 +1560,27 @@ deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/Gobi
   include/uapi/linux/route.h \
   include/net/lwtunnel.h \
   include/uapi/linux/lwtunnel.h \
-  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/Structs.h \
+  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/Structs.h \
+    $(wildcard include/config/BRIDGE) \
   include/linux/mii.h \
   include/linux/linkmode.h \
   include/uapi/linux/mii.h \
-  include/generated/uapi/linux/version.h \
+  include/linux/usb.h \
+    $(wildcard include/config/USB_MON) \
+    $(wildcard include/config/USB_LED_TRIG) \
+  include/linux/mod_devicetable.h \
+  include/uapi/linux/mei.h \
+  include/uapi/linux/mei_uuid.h \
+  include/linux/usb/ch9.h \
+  include/uapi/linux/usb/ch9.h \
+  include/linux/pm_runtime.h \
   include/linux/cdev.h \
   include/linux/usb/usbnet.h \
   include/linux/fdtable.h \
   include/linux/nospec.h \
-  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/QMIDevice.h \
-  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/QMI.h \
+  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/QMIDevice.h \
+  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/QMI.h \
 
-/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o: $(deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o)
+/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o: $(deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o)
 
-$(deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiUSBNet.o):
+$(deps_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o):

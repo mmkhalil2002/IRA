@@ -1,1 +1,1 @@
-savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/modules.order := {   echo /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/GobiNet.o; :; } > /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE_PI5/Quectel-Linux-4G5G/modules.order
+savedcmd_/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/modules.order := {   echo /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiNet.o; :; } > /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/modules.order

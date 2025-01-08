@@ -1,0 +1,55 @@
+ln -sf makefile Makefile
+make ARCH=aarch64 CROSS_COMPILE= -C /lib/modules/6.8.0-1017-raspi/build M=/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G modules
+make[1]: Entering directory '/usr/src/linux-headers-6.8.0-1017-raspi'
+warning: the compiler differs from the one used to build the kernel
+  The kernel was built by: aarch64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+  You are using:           gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+  CC [M]  /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o
+/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c:1292:5: warning: no previous prototype for ‘QuecGobiNetSuspend’ [-Wmissing-prototypes]
+ 1292 | int QuecGobiNetSuspend(struct usb_interface *pIntf, pm_message_t powerEvent ) {
+      |     ^~~~~~~~~~~~~~~~~~
+In file included from ./arch/aarch64/include/asm/alternative.h:9,
+                 from ./arch/aarch64/include/asm/lse.h:14,
+                 from ./arch/aarch64/include/asm/cmpxchg.h:14,
+                 from ./arch/aarch64/include/asm/atomic.h:16,
+                 from ./include/linux/atomic.h:7,
+                 from ./include/asm-generic/bitops/atomic.h:5,
+                 from ./arch/aarch64/include/asm/bitops.h:25,
+                 from ./include/linux/bitops.h:68,
+                 from ./arch/aarch64/include/asm/cache.h:40,
+                 from ./include/linux/cache.h:6,
+                 from ./include/linux/time.h:5,
+                 from ./arch/aarch64/include/asm/stat.h:12,
+                 from ./include/linux/stat.h:6,
+                 from ./include/linux/module.h:13,
+                 from /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c:55:
+/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c: In function ‘GobiUSBNetModInit’:
+./include/linux/init.h:184:22: error: passing argument 1 of ‘class_create’ from incompatible pointer type [-Werror=incompatible-pointer-types]
+  184 | #define THIS_MODULE (&__this_module)
+      |                     ~^~~~~~~~~~~~~~~
+      |                      |
+      |                      struct module *
+/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c:3197:28: note: in expansion of macro ‘THIS_MODULE’
+ 3197 |    gpClass = class_create( THIS_MODULE, "GobiQMI" );
+      |                            ^~~~~~~~~~~
+In file included from ./include/linux/device.h:31,
+                 from ./include/linux/dma-mapping.h:8,
+                 from ./include/linux/skbuff.h:28,
+                 from ./include/net/net_namespace.h:43,
+                 from ./include/linux/netdevice.h:38,
+                 from /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c:56:
+./include/linux/device/class.h:228:54: note: expected ‘const char *’ but argument is of type ‘struct module *’
+  228 | struct class * __must_check class_create(const char *name);
+      |                                          ~~~~~~~~~~~~^~~~
+/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.c:3197:14: error: too many arguments to function ‘class_create’
+ 3197 |    gpClass = class_create( THIS_MODULE, "GobiQMI" );
+      |              ^~~~~~~~~~~~
+./include/linux/device/class.h:228:29: note: declared here
+  228 | struct class * __must_check class_create(const char *name);
+      |                             ^~~~~~~~~~~~
+cc1: some warnings being treated as errors
+make[3]: *** [scripts/Makefile.build:243: /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/GobiUSBNet.o] Error 1
+make[2]: *** [/usr/src/linux-headers-6.8.0-1017-raspi/Makefile:1925: /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G] Error 2
+make[1]: *** [Makefile:240: __sub-make] Error 2
+make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-1017-raspi'
+make: *** [makefile:32: default] Error 2

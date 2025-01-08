@@ -45,6 +45,8 @@ __used __section("__versions") =
 	"alloc_chrdev_region\0"
 	"\x1c\x00\x00\x00\x48\x9f\xdb\x88"
 	"__check_object_size\0"
+	"\x14\x00\x00\x00\xf2\x0f\x72\x6e"
+	"rtnl_unlock\0"
 	"\x18\x00\x00\x00\xf5\x83\xe6\x92"
 	"down_timeout\0\0\0\0"
 	"\x18\x00\x00\x00\x1e\xd5\x9e\x1a"
@@ -55,8 +57,14 @@ __used __section("__versions") =
 	"trace_hardirqs_off\0\0"
 	"\x10\x00\x00\x00\xea\x9e\x05\x36"
 	"skb_put\0"
+	"\x18\x00\x00\x00\xe6\x5b\x51\x5e"
+	"ktime_get_ts64\0\0"
+	"\x14\x00\x00\x00\x85\x87\x67\xc0"
+	"consume_skb\0"
 	"\x14\x00\x00\x00\x6e\x4a\x6e\x65"
 	"snprintf\0\0\0\0"
+	"\x18\x00\x00\x00\x36\xf2\xb6\xc5"
+	"queue_work_on\0\0\0"
 	"\x1c\x00\x00\x00\x51\x8a\xf8\x01"
 	"unregister_netdev\0\0\0"
 	"\x20\x00\x00\x00\xb5\x41\x87\x60"
@@ -67,6 +75,10 @@ __used __section("__versions") =
 	"usb_register_driver\0"
 	"\x0c\x00\x00\x00\x66\x69\x2a\xcf"
 	"up\0\0"
+	"\x18\x00\x00\x00\x20\x9f\x87\x48"
+	"hrtimer_init\0\0\0\0"
+	"\x18\x00\x00\x00\xd5\xa6\xee\xbd"
+	"param_ops_long\0\0"
 	"\x10\x00\x00\x00\x7e\xa4\x29\x48"
 	"memcpy\0\0"
 	"\x10\x00\x00\x00\xba\x0c\x7a\x03"
@@ -81,8 +93,8 @@ __used __section("__versions") =
 	"pskb_expand_head\0\0\0\0"
 	"\x18\x00\x00\x00\x95\x1e\xa3\x79"
 	"wake_up_process\0"
-	"\x18\x00\x00\x00\x19\xeb\x5a\x8f"
-	"eth_type_trans\0\0"
+	"\x18\x00\x00\x00\x57\x73\xda\x93"
+	"dev_addr_mod\0\0\0\0"
 	"\x34\x00\x00\x00\x37\xa9\x2a\xf0"
 	"wait_for_completion_interruptible_timeout\0\0\0"
 	"\x14\x00\x00\x00\x60\xc0\x2d\x6b"
@@ -99,6 +111,10 @@ __used __section("__versions") =
 	"usbnet_tx_timeout\0\0\0"
 	"\x1c\x00\x00\x00\x54\xfc\xbb\x6c"
 	"__arch_copy_to_user\0"
+	"\x10\x00\x00\x00\x94\xb6\x16\xa9"
+	"strnlen\0"
+	"\x14\x00\x00\x00\xa8\x33\xb8\xa5"
+	"__alloc_skb\0"
 	"\x18\x00\x00\x00\x6a\x44\x8b\x48"
 	"usb_submit_urb\0\0"
 	"\x14\x00\x00\x00\x9d\x3d\x2b\xa4"
@@ -109,14 +125,20 @@ __used __section("__versions") =
 	"__ubsan_handle_out_of_bounds\0\0\0\0"
 	"\x14\x00\x00\x00\xa3\x1d\x61\xe0"
 	"cdev_add\0\0\0\0"
+	"\x18\x00\x00\x00\x4e\xc7\xa3\x0e"
+	"tasklet_kill\0\0\0\0"
 	"\x14\x00\x00\x00\x63\xc4\xa6\xa6"
 	"_dev_err\0\0\0\0"
+	"\x18\x00\x00\x00\x36\xf8\xf6\xb8"
+	"softnet_data\0\0\0\0"
 	"\x14\x00\x00\x00\xa4\xf2\x37\x5b"
 	"skb_pull\0\0\0\0"
 	"\x18\x00\x00\x00\x60\xa0\x7d\x51"
 	"usbnet_suspend\0\0"
 	"\x18\x00\x00\x00\xfc\x19\x79\x64"
 	"device_create\0\0\0"
+	"\x18\x00\x00\x00\x5a\xc8\x64\x23"
+	"tasklet_init\0\0\0\0"
 	"\x1c\x00\x00\x00\x88\xcc\x08\x36"
 	"usbnet_start_xmit\0\0\0"
 	"\x10\x00\x00\x00\xa8\x26\x6d\x1e"
@@ -125,24 +147,38 @@ __used __section("__versions") =
 	"class_create\0\0\0\0"
 	"\x1c\x00\x00\x00\x63\xa5\x03\x4c"
 	"random_kmalloc_seed\0"
+	"\x1c\x00\x00\x00\x38\x91\x62\x46"
+	"kfree_skb_reason\0\0\0\0"
 	"\x14\x00\x00\x00\x38\x20\xfd\x1f"
 	"skb_push\0\0\0\0"
+	"\x1c\x00\x00\x00\xee\xeb\x41\xa9"
+	"usbnet_get_drvinfo\0\0"
 	"\x18\x00\x00\x00\x72\x69\x8f\x92"
 	"usb_control_msg\0"
+	"\x24\x00\x00\x00\xa7\xcd\x5a\x36"
+	"set_normalized_timespec64\0\0\0"
 	"\x18\x00\x00\x00\x7a\xd2\xa2\xc0"
 	"register_netdev\0"
+	"\x1c\x00\x00\x00\xac\xb8\x2a\x9d"
+	"__tasklet_schedule\0\0"
 	"\x14\x00\x00\x00\x6d\x18\xe9\x58"
 	"free_netdev\0"
 	"\x1c\x00\x00\x00\x74\x79\xf5\xaa"
 	"usb_set_interface\0\0\0"
+	"\x14\x00\x00\x00\x90\x8e\x83\x0c"
+	"arp_create\0\0"
 	"\x18\x00\x00\x00\x3c\x74\x55\x36"
 	"usb_deregister\0\0"
 	"\x24\x00\x00\x00\x70\xce\x5c\xd3"
 	"_raw_spin_unlock_irqrestore\0"
 	"\x24\x00\x00\x00\x52\x3f\x0a\x4b"
 	"gic_nonsecure_priorities\0\0\0\0"
+	"\x1c\x00\x00\x00\xb2\x1d\x70\xcb"
+	"netif_tx_wake_queue\0"
 	"\x10\x00\x00\x00\xad\x64\xb7\xdc"
 	"memset\0\0"
+	"\x20\x00\x00\x00\xa6\xaf\x55\xd9"
+	"hrtimer_start_range_ns\0\0"
 	"\x20\x00\x00\x00\x54\xea\xa5\xd9"
 	"__init_waitqueue_head\0\0\0"
 	"\x14\x00\x00\x00\xdf\x2a\xcf\x56"
@@ -169,6 +205,10 @@ __used __section("__versions") =
 	"device_destroy\0\0"
 	"\x18\x00\x00\x00\xcb\xa4\xc7\xb3"
 	"usb_kill_urb\0\0\0\0"
+	"\x1c\x00\x00\x00\xfe\x2d\xc1\x03"
+	"cancel_work_sync\0\0\0\0"
+	"\x18\x00\x00\x00\x18\x01\x47\x56"
+	"__warn_printk\0\0\0"
 	"\x1c\x00\x00\x00\x53\x3c\x8f\x3c"
 	"netif_carrier_off\0\0\0"
 	"\x1c\x00\x00\x00\x73\xe5\xd0\x6b"
@@ -181,6 +221,12 @@ __used __section("__versions") =
 	"usbnet_disconnect\0\0\0"
 	"\x1c\x00\x00\x00\x5b\x21\x08\x13"
 	"netif_carrier_on\0\0\0\0"
+	"\x14\x00\x00\x00\xed\xfb\xa4\xc7"
+	"rtnl_lock\0\0\0"
+	"\x18\x00\x00\x00\x56\x6d\x66\x4a"
+	"hrtimer_cancel\0\0"
+	"\x24\x00\x00\x00\x6c\xb8\x71\x1d"
+	"netdev_rx_handler_register\0\0"
 	"\x1c\x00\x00\x00\xef\x6d\x5c\xa6"
 	"alt_cb_patch_nops\0\0\0"
 	"\x18\x00\x00\x00\x0b\x3d\x27\xb8"
@@ -197,6 +243,8 @@ __used __section("__versions") =
 	"param_ops_int\0\0\0"
 	"\x18\x00\x00\x00\x58\x61\x41\x8a"
 	"usbnet_resume\0\0\0"
+	"\x10\x00\x00\x00\x85\xba\x9c\x34"
+	"strchr\0\0"
 	"\x1c\x00\x00\x00\x34\x4b\xb5\xb5"
 	"_raw_spin_unlock\0\0\0\0"
 	"\x10\x00\x00\x00\xf9\x82\xa4\xf9"
@@ -209,23 +257,29 @@ __used __section("__versions") =
 	"kmalloc_caches\0\0"
 	"\x14\x00\x00\x00\xf9\x14\x7b\x9c"
 	"cdev_del\0\0\0\0"
+	"\x14\x00\x00\x00\xd3\x85\x33\x2d"
+	"system_wq\0\0\0"
 	"\x18\x00\x00\x00\xa9\x2b\x1c\x58"
 	"module_layout\0\0\0"
 	"\x00\x00\x00\x00\x00\x00\x00\x00";
 
 MODULE_INFO(depends, "");
 
-MODULE_ALIAS("usb:v05C6p9003d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v05C6p9215d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0125d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0121d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0306d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0435d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0296d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0191d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0195d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0512d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0620d*dc*dsc*dp*ic*isc*ip*in*");
-MODULE_ALIAS("usb:v2C7Cp0800d*dc*dsc*dp*ic*isc*ip*in*");
+MODULE_ALIAS("usb:v05C6p9003d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v05C6p9215d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0125d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0121d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp030Ed*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0306d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp030Bd*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0435d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0296d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0191d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0195d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0512d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0620d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0800d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp0801d*dc*dsc*dp*ic*isc*ip*in04*");
+MODULE_ALIAS("usb:v2C7Cp1803d*dc*dsc*dp*ic*isc*ip*in04*");
 
-MODULE_INFO(srcversion, "56097475D666D7D39A0BD64");
+MODULE_INFO(srcversion, "CF5BF6F5C77E86F6F05F24A");
