@@ -14,7 +14,10 @@
 #install GobiNet
 ./config_gobinet.sh
 
-# install qmi
+#install QM
+./config_QM_4G5G.sh
+
+# start qmi
 ./install_auto_connect.sh
 #dns configuration
 

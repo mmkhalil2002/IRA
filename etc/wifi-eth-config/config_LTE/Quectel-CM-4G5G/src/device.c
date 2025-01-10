@@ -668,7 +668,7 @@ static void *catch_log(void *arg)
 {
     PROFILE_T *profile = (PROFILE_T *)arg;
     int nreads = 0;
-    char tbuff[256+32];
+    char tbuff[1024];
     char filter[32];
     size_t tsize = strlen(get_time()) + 1;
 

@@ -1,0 +1,11 @@
+[unit]
+Description=Run Back Camera Video Server 
+
+[Timer]
+OnBootSec=20s
+#OnUnitActiveSec=20s 
+Unit=video_server_bcamera.service 
+Requires=video_server_bcamera.service 
+
+[Install]
+WantedBy=timers.target

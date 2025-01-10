@@ -258,7 +258,7 @@ static int atc_proxy_init(void) {
         err = at_tok_scanf(p_response->p_intermediates->line, "%s%d", NULL, &old_nat);
         if (err == 2 && old_nat != new_nat) {
             safe_at_response_free(p_response);
-            asprintf(&cmd, "AT+QCFG=\"NAT\",%d", new_nat);
+            err= asprintf(&cmd, "AT+QCFG=\"NAT\",%d", new_nat);
             err = at_send_command(cmd, &p_response);
             safe_free(cmd);
             if (!at_response_error(err, p_response)) {

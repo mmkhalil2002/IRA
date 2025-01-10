@@ -1,4 +1,4 @@
 #/bin/bash
 
 #mount /dev/sda1   /media/usb
-python3  video_server.py  -v 2 -p 14095 -c 14098 
+python3  /usr/local/bin/video_server.py  -v 2 -p 14095 -c 14098 

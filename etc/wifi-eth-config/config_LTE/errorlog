@@ -1,0 +1,18 @@
+/usr/src/linux-headers-6.8.0-1017-raspi/
+ln: failed to create symbolic link '/usr/src/linux-headers-6.8.0-1017-raspi/arch/aarch64/arm64': File exists
+/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G
+rm -rf Makefile usbnet.h
+rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions Module.* modules.order
+make: *** No rule to make target 'r', needed by 'obj-m'.  Stop.
+ln -sf makefile Makefile
+make ARCH=aarch64 CROSS_COMPILE= -C /lib/modules/6.8.0-1017-raspi/build M=/home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G modules
+make[1]: Entering directory '/usr/src/linux-headers-6.8.0-1017-raspi'
+warning: the compiler differs from the one used to build the kernel
+  The kernel was built by: aarch64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+  You are using:           gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+  MODPOST /home/ubuntu/IRA/etc/wifi-eth-config/config_LTE/Quectel-Linux-4G5G/Module.symvers
+make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-1017-raspi'
+mkdir -p /lib/modules/`uname -r`/kernel/drivers/net/usb/
+cp -f GobiNet.ko /lib/modules/`uname -r`/kernel/drivers/net/usb/
+cp: cannot stat 'GobiNet.ko': No such file or directory
+make: *** [makefile:36: install] Error 1

@@ -1,0 +1,19 @@
+[Unit]
+# this config file is located/etc/systemd/system
+Description= Front  Camera Video Server
+After=network.target 
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 45
+ExecStart=/bin/bash video_server_fcamera.sh 
+ExecStop= 
+#Restart=on-failure
+User=root
+
+#[Timer]
+#OnUnitActiveSec=45s
+#OnBootSec=45s
+
+[Install]
+WantedBy=multi-user.target
