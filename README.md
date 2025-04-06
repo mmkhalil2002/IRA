@@ -760,9 +760,11 @@ After generating the token, copy it immediately. You won't be able to view it ag
 
 git clone  https://github.com/mmkhalil2002/IRA.git
 
-# ignore large file
+# f u have large file ignore large file
 git add .gitignore
-git commit -m "Remove large file from repo and ignore it"
+#if u dont have large files
+git add .
+git commit -m " subject"
 git push
 
 
