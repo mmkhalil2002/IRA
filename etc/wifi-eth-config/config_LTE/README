@@ -1,5 +1,13 @@
 
+
+cd /usr/src  
+
 sudo apt install linux-headers-$(uname -r)
+
+
+
+# change the config file to allow password and disable public key
+*
 vi  /etc/ssh/sshd_config.d
 
 # This is the sshd server system-wide configuration file.  See

@@ -759,6 +759,11 @@ After generating the token, copy it immediately. You won't be able to view it ag
 ---------------- basic operations ------- 
 
 git clone  https://github.com/mmkhalil2002/IRA.git
-git add .
-git commit -m "put comment"
+
+# ignore large file
+git add .gitignore
+git commit -m "Remove large file from repo and ignore it"
 git push
+
+
+
