@@ -9,8 +9,8 @@ import sys
 import getopt
 import signal
 import cv2
-from io import BytesIO
 import numpy as np
+from io import BytesIO
 
 # Global variables to hold configuration options
 cap_dev = 0          # Default video device
@@ -21,6 +21,8 @@ ctr_port = 0         # Control server port
 # Global settings
 video_port = 8080  # Replace with the desired port number
 client_status = {}
+
+#  support color or grey
 color_frame = True
 
 
@@ -29,6 +31,74 @@ color_frame = True
 cap = None
 
 debug_level = 1  # Example debug level for output
+
+
+
+#  object detection based on FeaturePyramidNetwork FDA
+
+# Load the pre-trained MobileNet SSD model
+MODEL_PATH = "models/MobileNetSSD_deploy.caffemodel"
+PROTOTXT_PATH = "models/MobileNetSSD_deploy.prototxt"
+
+# Load class labels
+CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
+           "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
+           "dog", "horse", "motorbike", "person", "pottedplant",
+           "sheep", "sofa", "train", "tvmonitor"]
+
+# Assign colors for each class
+COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
+
+# Load the model
+net = cv2.dnn.readNetFromCaffe(PROTOTXT_PATH, MODEL_PATH)
+
+
+
+def detect_objects(frame):
+    """
+    Detect objects in the input frame using MobileNet SSD.
+
+    Args:
+        frame (numpy.ndarray): Input image frame.
+
+    Returns:
+        numpy.ndarray: Output frame with detection boxes and labels.
+    """
+    # Get frame dimensions
+    h, w = frame.shape[:2]
+
+    # Pre-process the frame for the model (blob conversion)
+    blob = cv2.dnn.blobFromImage(frame, 0.007843, (300, 300), 127.5)
+
+    # Set the input blob to the model
+    net.setInput(blob)
+
+    # Run forward pass to get detections
+    detections = net.forward()
+
+    # Process each detected object
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
+
+        # Only consider detections with confidence > 0.5
+        if confidence > 0.5:
+            # Extract class ID
+            class_id = int(detections[0, 0, i, 1])
+
+            # Get bounding box coordinates (normalized)
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (startX, startY, endX, endY) = box.astype("int")
+
+            # Draw bounding box and label
+            label = f"{CLASSES[class_id]}: {confidence * 100:.2f}%"
+            color = COLORS[class_id]
+            cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+            cv2.putText(frame, label, (startX, startY - 10), 
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+    return frame
+
+
 
 
 
